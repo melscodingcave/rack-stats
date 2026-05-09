@@ -1,0 +1,18 @@
+# Database (generated)
+data/rack_stats.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Virtual environment
+venv/
+.venv/
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
