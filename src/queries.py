@@ -21,10 +21,9 @@ def get_tournament_summary(engine) -> pd.DataFrame:
             t.format,
             t.payout,
             COUNT(DISTINCT te.player_id) as field_size,
-            COUNT(m.id) as total_matches
+            (SELECT COUNT(*) FROM matches m WHERE m.tournament_id = t.id) as total_matches
         FROM tournaments t
         LEFT JOIN tournament_entries te ON t.id = te.tournament_id
-        LEFT JOIN matches m ON t.id = m.tournament_id
         GROUP BY t.id
         ORDER BY t.date
     """)
@@ -73,8 +72,8 @@ def get_venue_stats(engine) -> pd.DataFrame:
             t.location,
             t.game_type,
             COUNT(DISTINCT t.id) as tournaments_held,
-            SUM(t.payout) as total_payout,
-            AVG(t.payout) as avg_payout,
+            SUM(DISTINCT t.payout) as total_payout,
+            AVG(DISTINCT t.payout) as avg_payout,
             COUNT(DISTINCT te.player_id) as unique_players
         FROM tournaments t
         LEFT JOIN tournament_entries te ON t.id = te.tournament_id
