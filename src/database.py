@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship, Session
+import os
 
 Base = declarative_base()
 
@@ -61,7 +62,10 @@ class Match(Base):
 
 
 def get_engine():
-    return create_engine('sqlite:///data/rack_stats.db')
+    # Always point to the data folder relative to this file's location
+    db_path = os.path.join(os.path.dirname(__file__),
+                           '..', 'data', 'rack_stats.db')
+    return create_engine(f'sqlite:///{db_path}')
 
 
 def init_db():
